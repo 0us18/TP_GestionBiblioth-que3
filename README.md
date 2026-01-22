@@ -1,41 +1,35 @@
 # Library Management System
 
-Système de gestion de bibliothèque complet développé en C# avec Entity Framework Core, SQL Server et Windows Forms.
+Application Windows Forms de gestion de bibliothèque (C# / .NET 8 / EF Core / SQL Server LocalDB).
 
-## Fonctionnalités Principales
+## Fonctionnalités
 
-- **Gestion des Livres**: Ajout, modification, recherche et suppression de livres.
-- **Gestion des Usagers**: Inscription, mise à jour et désactivation des membres.
-- **Gestion des Emprunts**: Création et retour d'emprunts avec calcul automatique des frais de retard.
-- **Activités**: Organisation d'événements et concours.
-- **Rapports**: Suivi des emprunts et participations.
+- **Livres**: CRUD, recherche, gestion des copies disponibles
+- **Usagers**: CRUD, gestion du statut (actif/inactif)
+- **Emprunts (livres)**: CRUD, dates, états (en cours / en retard / retourné), pénalités
+- **Activités (concours/événements)**: CRUD (entité `Activity` avec un `Type`)
+- **Matériel**: CRUD, emprunt, retour, historique des prêts
+- **Rapports**: emprunts par usager
 
-## Prérequis
+## Règles de suppression (important)
 
-- .NET 8.0 SDK ou supérieur
-- SQL Server LocalDB (installé avec Visual Studio)
+La suppression est bloquée si l’élément est lié à de l’historique.
 
-## Installation et Démarrage
+- **Livre**: impossible si emprunts ou évaluations
+- **Usager**: impossible si emprunts, participations, évaluations, prêts d’équipement
+- **Activité**: impossible si participations
+- **Matériel**: impossible si historique de prêts
 
-1. Cloner le dépôt :
-   ```bash
-   git clone https://github.com/votre-repo/LibraryManagementSystem.git
-   ```
+## Installation / exécution
 
-2. Ouvrir la solution `LibraryManagementSystem.sln` dans Visual Studio.
+- Pré-requis: **.NET 8 SDK**, **SQL Server LocalDB**
+- Ouvrir `LibraryManagementSystem.sln` dans Visual Studio
+- Démarrer `LibraryManagement.WinForms`
 
-3. Configurer la base de données :
-   L'application utilise Code First. Au premier lancement, la base de données sera automatiquement créée et peuplée avec des données de test (Seed Data).
+Documentation:
+- `INSTRUCTIONS_INSTALLATION.md`
+- `INSTRUCTIONS_UTILISATION.md`
+- `USER_GUIDE.md`
+- `README_TECHNICAL.md`
+- `sql/LibraryManagementDB.sql`
 
-4. Exécuter l'application :
-   Définir le projet `LibraryManagement.WinForms` comme projet de démarrage et lancer (F5).
-
-## Architecture
-
-Le projet suit une architecture en couches stricte :
-- **Core**: Entités et Interfaces (Domain Layer)
-- **Infrastructure**: Accès aux données (EF Core, Repositories)
-- **Application**: Logique métier (Services)
-- **WinForms**: Interface utilisateur (Presentation Layer)
-
-Pour plus de détails techniques, voir [README_TECHNICAL.md](README_TECHNICAL.md).
