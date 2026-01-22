@@ -5,3 +5,12 @@ obj/
 *.suo
 *.db
 *.lock.json
+*.pdb
+*.log
+*.tmp
+*.bak
+*.cache
+TestResults/
+.vscode/
+.idea/
+*.csproj.user
