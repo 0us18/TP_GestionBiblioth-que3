@@ -13,11 +13,9 @@ public class Activity
     public int MaxCapacity { get; set; }
     public int? OrganizerEmployeeId { get; set; }
 
-    // Calculated property
     [NotMapped]
     public int CurrentParticipants => Participations?.Count ?? 0;
 
-    // Navigation properties
     public Employee Organizer { get; set; } = null!;
     public ICollection<ActivityParticipation> Participations { get; set; } = new List<ActivityParticipation>();
 }

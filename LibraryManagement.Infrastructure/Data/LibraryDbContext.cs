@@ -26,7 +26,6 @@ public class LibraryDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         
-        // Apply all configurations from the current assembly
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

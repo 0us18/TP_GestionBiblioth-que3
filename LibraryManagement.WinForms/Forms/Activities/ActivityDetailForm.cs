@@ -9,11 +9,11 @@ public partial class ActivityDetailForm : Form
     private readonly ActivityService _activityService;
     public int? ActivityId { get; set; }
 
-    private TextBox _txtName;
-    private TextBox _txtDescription;
-    private ComboBox _cmbType;
-    private DateTimePicker _dtpDate;
-    private NumericUpDown _numCapacity;
+    private TextBox _txtName = null!;
+    private TextBox _txtDescription = null!;
+    private ComboBox _cmbType = null!;
+    private DateTimePicker _dtpDate = null!;
+    private NumericUpDown _numCapacity = null!;
 
     public ActivityDetailForm(ActivityService activityService)
     {
@@ -74,20 +74,16 @@ public partial class ActivityDetailForm : Form
             {
                 Name = _txtName.Text,
                 Description = _txtDescription.Text,
-                Type = (ActivityType)_cmbType.SelectedItem,
+                Type = (ActivityType)_cmbType.SelectedItem!,
                 ActivityDate = _dtpDate.Value,
                 MaxCapacity = (int)_numCapacity.Value,
-                // For simplicity, we assume a default organizer or handle it better in real app
-                // Since OrganizerEmployeeId is nullable now, we can leave it null or set a default
-                OrganizerEmployeeId = 1 // Hardcoded for demo/student level simplicity as requested
+                OrganizerEmployeeId = 1
             };
 
             if (ActivityId.HasValue)
             {
                 activity.ActivityId = ActivityId.Value;
-                // Update logic... ActivityService needs Update method or we use context directly via service
-                // For now, let's assume Add only for simplicity or I'd need to add Update to Service
-                MessageBox.Show("La modification n'est pas encore implémentée dans le service.");
+                await _activityService.UpdateActivityAsync(activity);
             }
             else
             {

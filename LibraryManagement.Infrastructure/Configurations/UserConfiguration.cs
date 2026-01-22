@@ -28,19 +28,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Phone)
             .HasMaxLength(20);
 
-        // One-to-Many with Loans - RESTRICT delete
         builder.HasMany(u => u.Loans)
             .WithOne(l => l.User)
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // One-to-Many with Reviews - RESTRICT delete (preserve history)
         builder.HasMany(u => u.Reviews)
             .WithOne(r => r.User)
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Restrict);
             
-        // One-to-Many with EquipmentLoans - RESTRICT delete
         builder.HasMany(u => u.EquipmentLoans)
             .WithOne(el => el.User)
             .HasForeignKey(el => el.UserId)

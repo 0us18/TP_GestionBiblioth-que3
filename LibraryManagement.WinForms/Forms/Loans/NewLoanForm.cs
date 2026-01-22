@@ -44,7 +44,7 @@ public partial class NewLoanForm : Form
     {
         var users = await _userService.GetAllUsersAsync();
         _cmbUsers.DataSource = users.ToList();
-        _cmbUsers.DisplayMember = "LastName"; // Simplified display
+        _cmbUsers.DisplayMember = "LastName";
         _cmbUsers.ValueMember = "UserId";
 
         var books = await _bookService.GetAllBooksAsync();

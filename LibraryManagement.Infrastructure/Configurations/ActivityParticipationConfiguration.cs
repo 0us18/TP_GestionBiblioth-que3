@@ -13,11 +13,11 @@ public class ActivityParticipationConfiguration : IEntityTypeConfiguration<Activ
         builder.HasOne(ap => ap.Activity)
             .WithMany(a => a.Participations)
             .HasForeignKey(ap => ap.ActivityId)
-            .OnDelete(DeleteBehavior.Cascade); // Deleting activity deletes participations
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(ap => ap.User)
             .WithMany(u => u.Participations)
             .HasForeignKey(ap => ap.UserId)
-            .OnDelete(DeleteBehavior.Restrict); // Deleting user keeps history (or fails)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

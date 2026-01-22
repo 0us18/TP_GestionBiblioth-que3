@@ -69,4 +69,26 @@ public class UserService
         user.Status = UserStatus.Inactive;
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task DeleteUserAsync(int id)
+    {
+        var user = await _unitOfWork.Users.GetUserWithLoansAsync(id);
+        if (user == null)
+            throw new ArgumentException("Usager introuvable.");
+
+        if (user.Loans.Any())
+            throw new InvalidOperationException("Impossible de supprimer un usager qui a des emprunts associés.");
+
+        if (user.Participations.Any())
+            throw new InvalidOperationException("Impossible de supprimer un usager qui a des participations associées.");
+
+        if (user.Reviews.Any())
+            throw new InvalidOperationException("Impossible de supprimer un usager qui a des évaluations (reviews) associées.");
+
+        if (user.EquipmentLoans.Any())
+            throw new InvalidOperationException("Impossible de supprimer un usager qui a des prêts d'équipement associés.");
+
+        _unitOfWork.Users.Remove(user);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

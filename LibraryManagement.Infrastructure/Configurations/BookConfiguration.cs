@@ -21,20 +21,17 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         builder.HasIndex(b => b.ISBN)
             .IsUnique();
 
-        // Many-to-Many with Author
         builder.HasMany(b => b.Authors)
             .WithMany(a => a.Books)
             .UsingEntity(j => j.ToTable("BookAuthors"));
 
-        // Many-to-Many with Category
         builder.HasMany(b => b.Categories)
             .WithMany(c => c.Books)
             .UsingEntity(j => j.ToTable("BookCategories"));
             
-        // One-to-Many with Reviews
         builder.HasMany(b => b.Reviews)
             .WithOne(r => r.Book)
             .HasForeignKey(r => r.BookId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

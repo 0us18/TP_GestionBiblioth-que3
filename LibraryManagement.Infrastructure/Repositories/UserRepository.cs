@@ -17,6 +17,9 @@ public class UserRepository : Repository<User>, IUserRepository
         return await _dbSet
             .Include(u => u.Loans)
             .ThenInclude(l => l.Book)
+            .Include(u => u.Participations)
+            .Include(u => u.Reviews)
+            .Include(u => u.EquipmentLoans)
             .FirstOrDefaultAsync(u => u.UserId == id);
     }
 

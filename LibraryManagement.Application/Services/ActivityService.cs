@@ -31,10 +31,42 @@ public class ActivityService
         if (activity.MaxCapacity <= 0)
             throw new ArgumentException("La capacité doit être supérieure à 0.");
 
-        // Validate organizer exists (optional check as FK constraint handles it, but good for business logic)
-        // We assume UI passes valid EmployeeId
-
         await _unitOfWork.Activities.AddAsync(activity);
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task UpdateActivityAsync(Activity activity)
+    {
+        var existing = await _unitOfWork.Activities.GetByIdAsync(activity.ActivityId);
+        if (existing == null)
+            throw new ArgumentException("Activité introuvable.");
+
+        if (activity.ActivityDate <= DateTime.Now)
+            throw new ArgumentException("La date de l'activité doit être dans le futur.");
+
+        if (activity.MaxCapacity <= 0)
+            throw new ArgumentException("La capacité doit être supérieure à 0.");
+
+        existing.Name = activity.Name;
+        existing.Description = activity.Description;
+        existing.Type = activity.Type;
+        existing.ActivityDate = activity.ActivityDate;
+        existing.MaxCapacity = activity.MaxCapacity;
+        existing.OrganizerEmployeeId = activity.OrganizerEmployeeId;
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task DeleteActivityAsync(int id)
+    {
+        var activity = await _unitOfWork.Activities.GetActivityWithParticipantsAsync(id);
+        if (activity == null)
+            throw new ArgumentException("Activité introuvable.");
+
+        if (activity.Participations.Any())
+            throw new InvalidOperationException("Impossible de supprimer une activité qui a des participations associées.");
+
+        _unitOfWork.Activities.Remove(activity);
         await _unitOfWork.SaveChangesAsync();
     }
 
@@ -57,9 +89,6 @@ public class ActivityService
             RegistrationDate = DateTime.Now,
             AttendanceStatus = AttendanceStatus.Registered
         };
-
-        // Note: We need a repository for Participation or add via Activity navigation
-        // Since we don't have IParticipationRepository, we add to Activity collection
         activity.Participations.Add(participation);
         
         await _unitOfWork.SaveChangesAsync();

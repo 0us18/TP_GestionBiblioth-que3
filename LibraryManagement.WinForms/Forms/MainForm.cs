@@ -3,6 +3,7 @@ using LibraryManagement.WinForms.Forms.Books;
 using LibraryManagement.WinForms.Forms.Users;
 using LibraryManagement.WinForms.Forms.Loans;
 using LibraryManagement.WinForms.Forms.Activities;
+using LibraryManagement.WinForms.Forms.Equipment;
 using LibraryManagement.WinForms.Forms.Reports;
 using LibraryManagement.WinForms;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,12 +13,14 @@ public partial class MainForm : Form
     private readonly BookService _bookService;
     private readonly LoanService _loanService;
     private readonly ActivityService _activityService;
+    private readonly EquipmentService _equipmentService;
 
-    public MainForm(BookService bookService, LoanService loanService, ActivityService activityService)
+    public MainForm(BookService bookService, LoanService loanService, ActivityService activityService, EquipmentService equipmentService)
     {
         _bookService = bookService;
         _loanService = loanService;
         _activityService = activityService;
+        _equipmentService = equipmentService;
         
         InitializeComponent();
         LoadDashboardStats();
@@ -29,7 +32,6 @@ public partial class MainForm : Form
         this.Size = new System.Drawing.Size(800, 600);
         this.StartPosition = FormStartPosition.CenterScreen;
 
-        // Simple Dashboard UI
         var labelWelcome = new Label
         {
             Text = "Bienvenue dans le système de gestion",
@@ -39,18 +41,19 @@ public partial class MainForm : Form
         };
         this.Controls.Add(labelWelcome);
 
-        // Buttons for Modules
         var btnBooks = CreateMenuButton("Gestion Livres", 20, 80, (s, e) => OpenBookList());
         var btnUsers = CreateMenuButton("Gestion Usagers", 20, 130, (s, e) => OpenUserList());
         var btnLoans = CreateMenuButton("Gestion Emprunts", 20, 180, (s, e) => OpenLoanList());
         var btnActivities = CreateMenuButton("Activités", 20, 230, (s, e) => OpenActivityList());
         var btnReports = CreateMenuButton("Rapports", 20, 280, (s, e) => OpenReports());
+        var btnEquipment = CreateMenuButton("Matériel", 20, 330, (s, e) => OpenEquipmentList());
 
         this.Controls.Add(btnBooks);
         this.Controls.Add(btnUsers);
         this.Controls.Add(btnLoans);
         this.Controls.Add(btnActivities);
         this.Controls.Add(btnReports);
+        this.Controls.Add(btnEquipment);
     }
 
     private Button CreateMenuButton(string text, int x, int y, EventHandler onClick)
@@ -68,9 +71,6 @@ public partial class MainForm : Form
 
     private async void LoadDashboardStats()
     {
-        // Load stats asynchronously
-        // var books = await _bookService.GetAllBooksAsync();
-        // Update labels...
     }
 
     private void OpenBookList()
@@ -100,6 +100,12 @@ public partial class MainForm : Form
     private void OpenReports()
     {
         var form = Program.ServiceProvider.GetRequiredService<ReportsForm>();
+        form.ShowDialog();
+    }
+
+    private void OpenEquipmentList()
+    {
+        var form = Program.ServiceProvider.GetRequiredService<EquipmentListForm>();
         form.ShowDialog();
     }
 }

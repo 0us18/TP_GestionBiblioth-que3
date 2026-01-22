@@ -7,6 +7,7 @@ public interface IUnitOfWork : IDisposable
     ILoanRepository Loans { get; }
     IActivityRepository Activities { get; }
     IEquipmentRepository Equipment { get; }
+    IEquipmentLoanRepository EquipmentLoans { get; }
     
     Task<int> SaveChangesAsync();
     Task BeginTransactionAsync();

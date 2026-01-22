@@ -10,6 +10,5 @@ public class Author
     public string Biography { get; set; } = string.Empty;
     public DateTime? BirthDate { get; set; }
 
-    // Navigation properties
     public ICollection<Book> Books { get; set; } = new List<Book>();
 }

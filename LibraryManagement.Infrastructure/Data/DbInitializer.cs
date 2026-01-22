@@ -7,16 +7,11 @@ public static class DbInitializer
 {
     public static void Initialize(LibraryDbContext context)
     {
-        // Ensure database is created
-        context.Database.EnsureCreated();
-
-        // Check if DB has been seeded
         if (context.Books.Any())
         {
-            return;   // DB has been seeded
+            return;
         }
 
-        // 1. Authors
         var authors = new Author[]
         {
             new Author { FirstName = "Victor", LastName = "Hugo", Biography = "Écrivain français", BirthDate = new DateTime(1802, 2, 26) },
@@ -28,7 +23,6 @@ public static class DbInitializer
         context.Authors.AddRange(authors);
         context.SaveChanges();
 
-        // 2. Categories
         var categories = new Category[]
         {
             new Category { Name = "Roman", Description = "Fiction narrative" },
@@ -40,7 +34,6 @@ public static class DbInitializer
         context.Categories.AddRange(categories);
         context.SaveChanges();
 
-        // 3. Books
         var books = new Book[]
         {
             new Book { Title = "Les Misérables", ISBN = "9780140444308", PublicationYear = 1862, AvailableCopies = 5 },
@@ -50,26 +43,24 @@ public static class DbInitializer
             new Book { Title = "Ça", ISBN = "9781501142970", PublicationYear = 1986, AvailableCopies = 3 }
         };
 
-        // Link Books to Authors and Categories
-        books[0].Authors.Add(authors[0]); // Hugo -> Les Misérables
-        books[0].Categories.Add(categories[0]); // Roman
+        books[0].Authors.Add(authors[0]);
+        books[0].Categories.Add(categories[0]);
 
-        books[1].Authors.Add(authors[1]); // Rowling -> HP
-        books[1].Categories.Add(categories[3]); // Fantastique
+        books[1].Authors.Add(authors[1]);
+        books[1].Categories.Add(categories[3]);
 
-        books[2].Authors.Add(authors[2]); // Orwell -> 1984
-        books[2].Categories.Add(categories[1]); // SF
+        books[2].Authors.Add(authors[2]);
+        books[2].Categories.Add(categories[1]);
 
-        books[3].Authors.Add(authors[3]); // Christie -> Orient Express
-        books[3].Categories.Add(categories[2]); // Policier
+        books[3].Authors.Add(authors[3]);
+        books[3].Categories.Add(categories[2]);
 
-        books[4].Authors.Add(authors[4]); // King -> Ça
-        books[4].Categories.Add(categories[3]); // Fantastique
+        books[4].Authors.Add(authors[4]);
+        books[4].Categories.Add(categories[3]);
 
         context.Books.AddRange(books);
         context.SaveChanges();
 
-        // 4. Users
         var users = new User[]
         {
             new User { FirstName = "Jean", LastName = "Dupont", Email = "jean.dupont@email.com", Phone = "514-555-0101", Address = "123 Rue Principale", City = "Montréal", PostalCode = "H1A 1A1", RegistrationDate = DateTime.Now.AddMonths(-6), Status = UserStatus.Active, UserType = UserType.Student },
@@ -79,7 +70,6 @@ public static class DbInitializer
         context.Users.AddRange(users);
         context.SaveChanges();
 
-        // 5. Employees
         var employees = new Employee[]
         {
             new Employee { FirstName = "Sophie", LastName = "Bibliothécaire", Email = "sophie@library.com", HireDate = DateTime.Now.AddYears(-5), Role = EmployeeRole.Librarian },
@@ -88,7 +78,6 @@ public static class DbInitializer
         context.Employees.AddRange(employees);
         context.SaveChanges();
 
-        // 6. Activities
         var activities = new Activity[]
         {
             new Activity { Name = "Club de lecture", Description = "Discussion mensuelle", Type = ActivityType.Event, ActivityDate = DateTime.Now.AddDays(7), MaxCapacity = 20, Organizer = employees[0] },
@@ -97,7 +86,6 @@ public static class DbInitializer
         context.Activities.AddRange(activities);
         context.SaveChanges();
 
-        // 7. Equipment
         var equipment = new Equipment[]
         {
             new Equipment { Name = "Laptop Dell", Type = EquipmentType.Laptop, SerialNumber = "SN123456", Status = EquipmentStatus.Available, PurchaseDate = DateTime.Now.AddYears(-1) },
@@ -106,11 +94,10 @@ public static class DbInitializer
         context.Equipment.AddRange(equipment);
         context.SaveChanges();
 
-        // 8. Loans
         var loans = new Loan[]
         {
             new Loan { UserId = users[0].UserId, BookId = books[0].BookId, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(4), Status = LoanStatus.InProgress },
-            new Loan { UserId = users[1].UserId, BookId = books[1].BookId, LoanDate = DateTime.Now.AddDays(-20), DueDate = DateTime.Now.AddDays(-6), ReturnDate = null, Status = LoanStatus.Late, LateFee = 3.00m } // Late
+            new Loan { UserId = users[1].UserId, BookId = books[1].BookId, LoanDate = DateTime.Now.AddDays(-20), DueDate = DateTime.Now.AddDays(-6), ReturnDate = null, Status = LoanStatus.Late, LateFee = 3.00m }
         };
         context.Loans.AddRange(loans);
         context.SaveChanges();

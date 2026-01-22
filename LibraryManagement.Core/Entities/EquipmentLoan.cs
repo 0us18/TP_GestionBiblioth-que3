@@ -12,7 +12,6 @@ public class EquipmentLoan
     public DateTime? ReturnDate { get; set; }
     public LoanStatus Status { get; set; }
 
-    // Navigation properties
     public Equipment Equipment { get; set; } = null!;
     public User User { get; set; } = null!;
 }

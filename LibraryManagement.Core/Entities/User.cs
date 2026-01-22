@@ -16,7 +16,6 @@ public class User
     public UserStatus Status { get; set; }
     public UserType UserType { get; set; }
 
-    // Navigation properties
     public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     public ICollection<ActivityParticipation> Participations { get; set; } = new List<ActivityParticipation>();
     public ICollection<EquipmentLoan> EquipmentLoans { get; set; } = new List<EquipmentLoan>();

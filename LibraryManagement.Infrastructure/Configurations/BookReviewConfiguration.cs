@@ -16,7 +16,7 @@ public class BookReviewConfiguration : IEntityTypeConfiguration<BookReview>
         builder.HasOne(br => br.Book)
             .WithMany(b => b.Reviews)
             .HasForeignKey(br => br.BookId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(br => br.User)
             .WithMany(u => u.Reviews)

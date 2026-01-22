@@ -11,6 +11,5 @@ public class Employee
     public DateTime HireDate { get; set; }
     public EmployeeRole Role { get; set; }
 
-    // Navigation properties
     public ICollection<Activity> OrganizedActivities { get; set; } = new List<Activity>();
 }

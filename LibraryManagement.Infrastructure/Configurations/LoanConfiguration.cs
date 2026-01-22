@@ -16,6 +16,6 @@ public class LoanConfiguration : IEntityTypeConfiguration<Loan>
         builder.HasOne(l => l.Book)
             .WithMany(b => b.Loans)
             .HasForeignKey(l => l.BookId)
-            .OnDelete(DeleteBehavior.Restrict); // Cannot delete book if loaned
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

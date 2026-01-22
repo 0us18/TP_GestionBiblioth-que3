@@ -29,7 +29,6 @@ public class BookService
 
     public async Task AddBookAsync(Book book)
     {
-        // Validation
         if (string.IsNullOrWhiteSpace(book.Title))
             throw new ArgumentException("Le titre est requis.");
 
@@ -52,14 +51,10 @@ public class BookService
         if (!await _unitOfWork.Books.IsISBNUniqueAsync(book.ISBN, book.BookId))
             throw new ArgumentException("L'ISBN doit être unique.");
 
-        // Update properties
         existingBook.Title = book.Title;
         existingBook.ISBN = book.ISBN;
         existingBook.PublicationYear = book.PublicationYear;
         existingBook.AvailableCopies = book.AvailableCopies;
-        
-        // Note: Authors and Categories update would require more complex logic handling relationships
-        // For simplicity in this scope, we assume basic property updates or handled via UI specific logic
 
         await _unitOfWork.SaveChangesAsync();
     }
@@ -70,10 +65,13 @@ public class BookService
         if (book == null)
             throw new ArgumentException("Livre introuvable.");
 
-        // Check for active loans
         var loans = await _unitOfWork.Loans.FindAsync(l => l.BookId == id);
         if (loans.Any())
             throw new InvalidOperationException("Impossible de supprimer un livre qui a des emprunts associés.");
+
+        var bookWithDetails = await _unitOfWork.Books.GetBookWithDetailsAsync(id);
+        if (bookWithDetails != null && bookWithDetails.Reviews.Any())
+            throw new InvalidOperationException("Impossible de supprimer un livre qui a des évaluations (reviews) associées.");
 
         _unitOfWork.Books.Remove(book);
         await _unitOfWork.SaveChangesAsync();

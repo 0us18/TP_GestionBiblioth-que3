@@ -21,7 +21,6 @@ public class EquipmentConfiguration : IEntityTypeConfiguration<Equipment>
         builder.HasIndex(e => e.SerialNumber)
             .IsUnique();
 
-        // One-to-Many with EquipmentLoans - RESTRICT delete
         builder.HasMany(e => e.Loans)
             .WithOne(el => el.Equipment)
             .HasForeignKey(el => el.EquipmentId)

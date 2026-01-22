@@ -11,6 +11,5 @@ public class Equipment
     public EquipmentStatus Status { get; set; }
     public DateTime PurchaseDate { get; set; }
 
-    // Navigation properties
     public ICollection<EquipmentLoan> Loans { get; set; } = new List<EquipmentLoan>();
 }

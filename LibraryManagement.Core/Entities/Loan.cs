@@ -13,7 +13,6 @@ public class Loan
     public LoanStatus Status { get; set; }
     public decimal? LateFee { get; set; }
 
-    // Navigation properties
     public User User { get; set; } = null!;
     public Book Book { get; set; } = null!;
 }

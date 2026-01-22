@@ -10,7 +10,6 @@ public class ActivityParticipation
     public DateTime RegistrationDate { get; set; }
     public AttendanceStatus AttendanceStatus { get; set; }
 
-    // Navigation properties
     public Activity Activity { get; set; } = null!;
     public User User { get; set; } = null!;
 }

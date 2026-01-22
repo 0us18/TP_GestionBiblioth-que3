@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork
     public ILoanRepository Loans { get; }
     public IActivityRepository Activities { get; }
     public IEquipmentRepository Equipment { get; }
+    public IEquipmentLoanRepository EquipmentLoans { get; }
 
     public UnitOfWork(
         LibraryDbContext context,
@@ -21,7 +22,8 @@ public class UnitOfWork : IUnitOfWork
         IUserRepository users,
         ILoanRepository loans,
         IActivityRepository activities,
-        IEquipmentRepository equipment)
+        IEquipmentRepository equipment,
+        IEquipmentLoanRepository equipmentLoans)
     {
         _context = context;
         Books = books;
@@ -29,6 +31,7 @@ public class UnitOfWork : IUnitOfWork
         Loans = loans;
         Activities = activities;
         Equipment = equipment;
+        EquipmentLoans = equipmentLoans;
     }
 
     public async Task<int> SaveChangesAsync()

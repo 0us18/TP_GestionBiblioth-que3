@@ -9,7 +9,6 @@ public class BookReview
     public string Comment { get; set; } = string.Empty;
     public DateTime ReviewDate { get; set; }
 
-    // Navigation properties
     public Book Book { get; set; } = null!;
     public User User { get; set; } = null!;
 }
